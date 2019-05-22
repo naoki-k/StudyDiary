@@ -4,3 +4,8 @@
 ## 学習ジャンル
 
 ## 内包プロジェクト
+### Ruby on Rails
+#### practice-account
+アカウント関連の実装の練習用プロジェクト。
+RailsTutorialを参考に実装する。
+
