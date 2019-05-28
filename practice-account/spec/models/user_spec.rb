@@ -1,14 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-
   describe "#valid?" do
     subject(:user) { FactoryBot.build_stubbed(:user) }
 
     context "情報が正しいとき" do
       it { is_expected.to be_valid }
     end
-    
+
     context "nameが空のとき" do
       before do
         user.name = " "
@@ -61,22 +60,22 @@ RSpec.describe User, type: :model do
     end
 
     context "emailが不正なとき" do
-        it { 
-          user.email = "user@example,com"
-          is_expected.to_not be_valid 
-        }
-        it { 
-          user.email = "user_at_foo.org"
-          is_expected.to_not be_valid 
-        }
-        it { 
-          user.email = "user.name@example."
-          is_expected.to_not be_valid 
-        }
-        it { 
-          user.email = "foo@bar..com"
-          is_expected.to_not be_valid 
-        }
+      it {
+        user.email = "user@example,com"
+        is_expected.to_not be_valid
+      }
+      it {
+        user.email = "user_at_foo.org"
+        is_expected.to_not be_valid
+      }
+      it {
+        user.email = "user.name@example."
+        is_expected.to_not be_valid
+      }
+      it {
+        user.email = "foo@bar..com"
+        is_expected.to_not be_valid
+      }
     end
 
     context "emailが小文字で登録されているか" do
