@@ -2,60 +2,46 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   describe "#valid?" do
-    subject(:user) { FactoryBot.build_stubbed(:user) }
+    subject(:user) { FactoryBot.build(:user) }
 
     context "情報が正しいとき" do
       it { is_expected.to be_valid }
     end
 
     context "nameが空のとき" do
-      before do
-        user.name = " "
-      end
+      subject { FactoryBot.build(:user, name: "") }
       it { is_expected.to_not be_valid }
     end
 
     context "nameの文字数が2文字以下のとき" do
-      before do
-        user.name = "x"
-      end
+      subject { FactoryBot.build(:user, name: "x") }
       it { is_expected.to_not be_valid }
     end
 
     context "nameの文字数が25文字以上のとき" do
-      before do
-        user.name = "x" * 26
-      end
+      subject { FactoryBot.build(:user, name: "x" * 26) }
       it { is_expected.to_not be_valid }
     end
 
     context "同じnameのユーザがいたとき" do
-      before do
-        FactoryBot.create(:user)
-        user.email = "other@example.com"
-      end
+      subject { FactoryBot.build(:user, email: "other@example.com") }
+      before { FactoryBot.create(:user) }
       it { is_expected.to_not be_valid }
     end
 
     context "emailが空のとき" do
-      before do
-        user.email = " "
-      end
+      subject { FactoryBot.build(:user, email: "") }
       it { is_expected.to_not be_valid }
     end
 
     context "emailの文字数が250文字以上のとき" do
-      before do
-        user.email = "x" * 250 + "@example.com"
-      end
+      subject { FactoryBot.build(:user, email: "x" * 250 + "@example.com") }
       it { is_expected.to_not be_valid }
     end
 
     context "emailが登録済みのとき" do
-      before do
-        FactoryBot.create(:user)
-        user.name = "other"
-      end
+      subject { FactoryBot.build(:user, name: "other") }
+      before { FactoryBot.create(:user) }
       it { is_expected.to_not be_valid }
     end
 
@@ -79,9 +65,9 @@ RSpec.describe User, type: :model do
     end
 
     context "emailが小文字で登録されているか" do
-      let(:email) { user.email.upcase! }
-      let(:saved_user) { FactoryBot.create(:user) }
-      it { expect(saved_user.reload.email).to eq user.email.downcase }
+      let(:case_insencitive_email) { "HogehoGe@Example.COM" }
+      let(:user) { FactoryBot.create(:user, email: case_insencitive_email) }
+      it { expect(user.email).to eq case_insencitive_email.downcase }
     end
   end
 end
