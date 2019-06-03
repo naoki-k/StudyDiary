@@ -9,6 +9,10 @@ class User < ApplicationRecord
                     uniqueness: { case_sensitive: false }
   has_secure_password
 
+  def self.digest(string)
+    BCrypt::Password.create(string)
+  end
+
   private
 
   def downcase_email
