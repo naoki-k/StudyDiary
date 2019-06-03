@@ -3,10 +3,9 @@ class User < ApplicationRecord
   validates :name, presence: true,
                    length: { minimum: 2, maximum: 25 },
                    uniqueness: { case_sensitive: false }
-  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
   validates :email, presence: true,
                     length: { maximum: 250 },
-                    'valid_email_2/email': true,
+                    format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i },
                     uniqueness: { case_sensitive: false }
 
   private
