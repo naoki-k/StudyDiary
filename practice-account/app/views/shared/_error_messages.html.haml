@@ -1,9 +1,7 @@
 - if user.errors.any?
-  #error_explanation
-    #alert
-      == The form contailns #{pluralize(user.errors.count, "error")}
-    %ul
-    - user.errors.full_messages.each do |msg|
-      %li 
-        = msg
-        
+  %div
+    == The form contailns #{pluralize(user.errors.count, "error")}
+  %ul
+  - user.errors.full_messages.each do |msg|
+    %li 
+      = msg
