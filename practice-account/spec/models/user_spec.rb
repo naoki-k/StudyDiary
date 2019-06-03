@@ -9,7 +9,7 @@ RSpec.describe User, type: :model do
     end
 
     context "nameが空のとき" do
-      subject { FactoryBot.build(:user, name: "") }
+      subject { FactoryBot.build(:user, name: nil) }
       it { is_expected.to_not be_valid }
     end
 
@@ -30,7 +30,7 @@ RSpec.describe User, type: :model do
     end
 
     context "emailが空のとき" do
-      subject { FactoryBot.build(:user, email: "") }
+      subject { FactoryBot.build(:user, email: nil) }
       it { is_expected.to_not be_valid }
     end
 
@@ -73,6 +73,21 @@ RSpec.describe User, type: :model do
       let(:case_insencitive_email) { "HogehoGe@Example.COM" }
       let(:user) { FactoryBot.create(:user, email: case_insencitive_email) }
       it { expect(user.email).to eq case_insencitive_email.downcase }
+    end
+
+    context "passwordが空のとき" do
+      subject { FactoryBot.build(:user, password: nil, password_confirmation: nil) }
+      it { is_expected.to_not be_valid }
+    end
+
+    context "passwordが6文字より短いとき" do
+      subject { FactoryBot.build(:user, password: "hoge", password_confirmation: "hoge") }
+      it { is_expected.to_not be_valid}
+    end
+
+    context "password_confimationが一致しない場合" do
+      subject { FactoryBot.build(:user, password: "hogehoge", password_confirmation: "fugafuga") }
+      it { is_expected.to_not be_valid}
     end
   end
 end
