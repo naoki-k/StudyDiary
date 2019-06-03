@@ -10,9 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.workspace.sample.R;
+import com.example.workspace.sample.databinding.FragmentHomeBinding;
 
 public class HomeFragment extends Fragment implements HomeView {
     private HomeViewModel viewModel;
+    private FragmentHomeBinding binding;
 
     public static HomeFragment createInstance() {
         return new HomeFragment();
@@ -27,10 +29,14 @@ public class HomeFragment extends Fragment implements HomeView {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        binding = FragmentHomeBinding.bind(view);
+        viewModel = new HomeViewModelImpl();
+        viewModel.init(this);
+        binding.setViewModel(viewModel);
     }
 
     @Override
     public Context getContext() {
-        return getActivity();
+        return getActivity().getApplicationContext();
     }
 }

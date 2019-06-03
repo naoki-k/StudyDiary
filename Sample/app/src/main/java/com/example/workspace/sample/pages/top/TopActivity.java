@@ -13,7 +13,7 @@ public class TopActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_top);
 
-        FragmentUtil fragmentUtil = new FragmentUtil(getSupportFragmentManager(), R.id.container);
+        FragmentUtil fragmentUtil = new FragmentUtil(getSupportFragmentManager(), R.id.top_container);
         fragmentUtil.openFragment(HomeFragment.createInstance());
     }
 }
