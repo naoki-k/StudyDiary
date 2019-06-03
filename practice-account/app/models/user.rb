@@ -7,6 +7,7 @@ class User < ApplicationRecord
                     length: { maximum: 250 },
                     format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i },
                     uniqueness: { case_sensitive: false }
+  has_secure_password
 
   private
 
