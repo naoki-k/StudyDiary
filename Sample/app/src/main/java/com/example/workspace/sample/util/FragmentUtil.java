@@ -18,4 +18,3 @@ public class FragmentUtil {
         transaction.replace(containerViewId, fragment).addToBackStack(null).commit();
     }
 }
-

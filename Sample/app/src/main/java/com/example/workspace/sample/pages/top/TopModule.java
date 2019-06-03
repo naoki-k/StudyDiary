@@ -9,5 +9,3 @@ public abstract class TopModule {
     @Binds
     abstract HomeViewModel bindHomeViewModel(HomeViewModelImpl viewModel);
 }
-
-
