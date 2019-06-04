@@ -85,7 +85,7 @@ RSpec.describe User, type: :model do
       it { is_expected.to_not be_valid}
     end
 
-    context "password_confimationが一致しない場合" do
+    context "password_confimationが一致しないとき" do
       subject { FactoryBot.build(:user, password: "hogehoge", password_confirmation: "fugafuga") }
       it { is_expected.to_not be_valid}
     end
