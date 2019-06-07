@@ -1,0 +1,11 @@
+%h1 Sign in
+
+= form_for(:signin, url: signin_path) do |f|
+
+  = f.label :email, "email"
+  = f.text_field :email, placeholder: "email"
+
+  = f.label :password, "password"
+  = f.text_field :password, placeholder: "password", type: "password"
+
+  = f.submit "sign in"
