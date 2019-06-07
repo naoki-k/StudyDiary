@@ -23,12 +23,6 @@ RSpec.describe User, type: :model do
       it { is_expected.to_not be_valid }
     end
 
-    context "同じ名前のユーザがいたとき" do
-      subject { FactoryBot.build(:user, email: "other@example.com") }
-      before { FactoryBot.create(:user) }
-      it { is_expected.to_not be_valid }
-    end
-
     context "emailが空のとき" do
       subject { FactoryBot.build(:user, email: nil) }
       it { is_expected.to_not be_valid }
@@ -48,13 +42,13 @@ RSpec.describe User, type: :model do
     context "emailが正しいとき" do
       let(:valid_emails) { %w(user@example.com USER@foo.COM
         A_US-ER@foo.bar.org  first.last@foo.jp alice+bob@baz.cn) }
-      it { is_expected.to valid_all_values(valid_emails).column(:email) }
+      it { is_expected.to accept_all(valid_emails).column(:email) }
     end
 
     context "emailが不正なとき" do
       let(:invalid_emails) { %w( user@example,com user_at_foo.org
         user.name@example. foo@bar+baz.com foo@bar..com ) }
-      it { is_expected.to invalid_all_values(invalid_emails).column(:email) }
+      it { is_expected.to reject_all(invalid_emails).column(:email) }
     end
 
     context "emailが小文字で登録されているか" do

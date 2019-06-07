@@ -1,6 +1,6 @@
 module CustomMatchers
   module ValidHelper
-    RSpec::Matchers.define :valid_all_values do |values|
+    RSpec::Matchers.define :accept_all do |values|
       match do |model|
         return false if @column.blank?
     
@@ -15,11 +15,11 @@ module CustomMatchers
       end
 
       description do
-        "be valid"
+        "be accept all attributes"
       end
     end
     
-    RSpec::Matchers.define :invalid_all_values do |values|
+    RSpec::Matchers.define :reject_all do |values|
       match do |model|
         return false if @column.blank?
     
@@ -32,9 +32,9 @@ module CustomMatchers
       chain :column do |column|
         @column = column
       end
-      
+
       description do
-        "not be valid"
+        "be reject all attributes"
       end
     end
   end
