@@ -46,27 +46,15 @@ RSpec.describe User, type: :model do
     end
 
     context "emailが正しいとき" do
-      let(:valid_user) { [] }
-      before do
-        valid_user << FactoryBot.build(:user, email: "user@example.com")
-        valid_user << FactoryBot.build(:user, email: "USER@foo.COM")
-        valid_user << FactoryBot.build(:user, email: "A_US-ER@foo.bar.org")
-        valid_user << FactoryBot.build(:user, email: "first.last@foo.jp")
-        valid_user << FactoryBot.build(:user, email: "alice+bob@baz.cn")
-      end
-      it { expect(valid_all valid_user).to be_truthy }
+      let(:valid_emails) { %w(user@example.com USER@foo.COM
+        A_US-ER@foo.bar.org  first.last@foo.jp alice+bob@baz.cn) }
+      it { is_expected.to valid_all_values(valid_emails).column(:email) }
     end
 
     context "emailが不正なとき" do
-      let(:invalid_user) { [] }
-      before do
-        invalid_user << FactoryBot.build(:user, email: "user@example,com")
-        invalid_user << FactoryBot.build(:user, email: "user_at_foo.org")
-        invalid_user << FactoryBot.build(:user, email: "user.name@example.")
-        invalid_user << FactoryBot.build(:user, email: "foo@bar+baz.com")
-        invalid_user << FactoryBot.build(:user, email: "foo@bar..com")
-      end
-      it { expect(invalid_all invalid_user).to be_truthy }
+      let(:invalid_emails) { %w( user@example,com user_at_foo.org
+        user.name@example. foo@bar+baz.com foo@bar..com ) }
+      it { is_expected.to invalid_all_values(invalid_emails).column(:email) }
     end
 
     context "emailが小文字で登録されているか" do
