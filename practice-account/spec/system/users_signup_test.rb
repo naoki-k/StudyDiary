@@ -10,8 +10,9 @@ RSpec.describe "SignUp", type: :system do
       fill_in 'password', with: 'password'
       fill_in 'password confirmation', with: 'password'
       click_button 'sign up'
-      expect(page.body).to have_selector 'div.alert', text: 'Account created'
+      expect(page.body).to have_selector 'div.alert', text: 'Nice to meet you,'
       expect(page.body).to have_link 'Sign up'
+      expect(page.body).to have_link 'Sign in'
     end
   end
 
@@ -19,8 +20,8 @@ RSpec.describe "SignUp", type: :system do
     it :aggregate_failures do
       visit :signup
       click_button 'sign up'
-      expect(page.body).to have_selector 'div.alert', text: 'Something wrong'
-      expect(page.body).to have_selector 'div', text: 'The form contailns 7 errors'
+      expect(page.body).to have_selector 'div.alert', text: 'Something wrong...'
+      expect(page.body).to have_selector 'div', text: 'The form contains'
       expect(page.body).to have_button 'sign up'
     end
   end

@@ -25,7 +25,7 @@ RSpec.describe UsersController, type: :controller do
       end
     end
 
-    context "アカウント登録が失敗したとき"do
+    context "アカウント登録が失敗したとき" do
       let(:email) { nil }
 
       it :aggregate_failures do
