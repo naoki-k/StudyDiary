@@ -1,7 +1,6 @@
 class User < ApplicationRecord
   before_save :downcase_email
-  validates :name, length: { minimum: 2, maximum: 25 },
-                   uniqueness: { case_sensitive: false }
+  validates :name, length: { minimum: 2, maximum: 25 }
   validates :email, presence: true,
                     length: { maximum: 250 },
                     format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i },
