@@ -1,1 +1,20 @@
 %h1 Sign up
+
+= render "shared/flash_messages", user: @user
+= render "shared/error_messages", user: @user
+
+= form_for @user do |f|
+
+    = f.label :name, "name"
+    = f.text_field :name, maxlength: 25, placeholder: "name"
+
+    = f.label :email, "email"
+    = f.text_field :email, placeholder: "email"
+
+    = f.label :password, "password"
+    = f.text_field :password, placeholder: "password", type: "password"
+
+    = f.label :password_confirmation, "password confirmation"
+    = f.text_field :password_confirmation, placeholder: "confirmation", type: "password"
+
+    = f.submit "sign up"

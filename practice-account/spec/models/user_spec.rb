@@ -9,7 +9,7 @@ RSpec.describe User, type: :model do
     end
 
     context "nameが空のとき" do
-      subject { FactoryBot.build(:user, name: "") }
+      subject { FactoryBot.build(:user, name: nil) }
       it { is_expected.to_not be_valid }
     end
 
@@ -23,14 +23,8 @@ RSpec.describe User, type: :model do
       it { is_expected.to_not be_valid }
     end
 
-    context "同じ名前のユーザがいたとき" do
-      subject { FactoryBot.build(:user, email: "other@example.com") }
-      before { FactoryBot.create(:user) }
-      it { is_expected.to_not be_valid }
-    end
-
     context "emailが空のとき" do
-      subject { FactoryBot.build(:user, email: "") }
+      subject { FactoryBot.build(:user, email: nil) }
       it { is_expected.to_not be_valid }
     end
 
@@ -46,33 +40,36 @@ RSpec.describe User, type: :model do
     end
 
     context "emailが正しいとき" do
-      let(:valid_user) { [] }
-      before do
-        valid_user << FactoryBot.build(:user, email: "user@example.com")
-        valid_user << FactoryBot.build(:user, email: "USER@foo.COM")
-        valid_user << FactoryBot.build(:user, email: "A_US-ER@foo.bar.org")
-        valid_user << FactoryBot.build(:user, email: "first.last@foo.jp")
-        valid_user << FactoryBot.build(:user, email: "alice+bob@baz.cn")
-      end
-      it { expect(valid_all valid_user).to be_truthy }
+      let(:valid_emails) { %w(user@example.com USER@foo.COM
+        A_US-ER@foo.bar.org  first.last@foo.jp alice+bob@baz.cn) }
+      it { is_expected.to accept_all(valid_emails).column(:email) }
     end
 
     context "emailが不正なとき" do
-      let(:invalid_user) { [] }
-      before do
-        invalid_user << FactoryBot.build(:user, email: "user@example,com")
-        invalid_user << FactoryBot.build(:user, email: "user_at_foo.org")
-        invalid_user << FactoryBot.build(:user, email: "user.name@example.")
-        invalid_user << FactoryBot.build(:user, email: "foo@bar+baz.com")
-        invalid_user << FactoryBot.build(:user, email: "foo@bar..com")
-      end
-      it { expect(invalid_all invalid_user).to be_truthy }
+      let(:invalid_emails) { %w( user@example,com user_at_foo.org
+        user.name@example. foo@bar+baz.com foo@bar..com ) }
+      it { is_expected.to reject_all(invalid_emails).column(:email) }
     end
 
     context "emailが小文字で登録されているか" do
       let(:case_insencitive_email) { "HogehoGe@Example.COM" }
       let(:user) { FactoryBot.create(:user, email: case_insencitive_email) }
       it { expect(user.email).to eq case_insencitive_email.downcase }
+    end
+
+    context "passwordが空のとき" do
+      subject { FactoryBot.build(:user, password: nil, password_confirmation: nil) }
+      it { is_expected.to_not be_valid }
+    end
+
+    context "passwordが6文字より短いとき" do
+      subject { FactoryBot.build(:user, password: "hoge", password_confirmation: "hoge") }
+      it { is_expected.to_not be_valid}
+    end
+
+    context "password_confimationが一致しないとき" do
+      subject { FactoryBot.build(:user, password: "hogehoge", password_confirmation: "fugafuga") }
+      it { is_expected.to_not be_valid}
     end
   end
 end
