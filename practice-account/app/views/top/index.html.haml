@@ -7,3 +7,107 @@
   = link_to "Sign out", signout_path, method: :delete
 - else
   = link_to "Sign in", signin_path
+
+  %div.calculator
+    %div.line.display
+      %label.item.display-label
+    %div.line
+      %button.item.clear C
+      %button.item.operator ÷
+    %div.line
+      %button.item.number 7
+      %button.item.number 8
+      %button.item.number 9
+      %button.item.operator ×
+    %div.line
+      %button.item.number 4
+      %button.item.number 5
+      %button.item.number 6
+      %button.item.operator -
+    %div.line
+      %button.item.number 1
+      %button.item.number 2
+      %button.item.number 3
+      %button.item.operator +
+    %div.line
+      %button.item.number 0
+      %button.item.equal =
+
+:javascript
+
+  const operators = ['+', '-', '×', '÷']
+  const display = document.getElementsByClassName("display-label")
+  const clearButton = document.getElementsByClassName("clear")
+  const equalButton = document.getElementsByClassName("equal")
+  const elements = Array.from(document.getElementsByClassName("number"))
+      .concat(Array.from(document.getElementsByClassName("operator")))
+
+  elements.forEach(element => {
+    element.addEventListener('click', () => {
+      output(element.innerText)
+    })
+  })
+
+  clearButton[0].addEventListener('click', () => {
+    clear()
+  })
+
+  equalButton[0].addEventListener('click', () => {
+    display[0].innerText = calc(display[0].innerText)
+  })
+
+  const output = (value) => {
+    if (display[0].innerText == '') {
+      if (!isOperators(value)) display[0].innerText += value
+      return // 早期リターン
+    } 
+    // 直前がオペレータかどうか
+    if (isOperators(display[0].innerText.slice(-1))) {
+      if (!isOperators(value)) display[0].innerText += ` ${value}`
+    } else {
+      if (isOperators(value)){
+        display[0].innerText += ` ${value}`
+      } else {
+        display[0].innerText += value
+      }
+    }
+  }
+
+  const clear = () => {
+    display[0].innerText = ''
+  }
+
+  const isOperators = (value) => operators.includes(value)
+
+  const calc = (formula) => {
+    var elements = formula.split(' ')
+    if (elements[0] == '') {
+      return 'Count on me! ( ¨̮ )'
+    }
+
+    elements = calcDriver(elements, ['×', '÷'])
+    elements = calcDriver(elements, ['+', '-'])
+    return elements[0]
+  }
+
+  const calcDriver = (elements, operatorList) => {
+    const size = elements.length
+    // 演算子のindexでループ処理
+    for (var i = 1; i < size; i+=2) {
+      if (operatorList.includes(elements[i])) {
+        result = operate[elements[i]](Number(elements[i-1]), Number(elements[i+1]))
+        elements.splice(i-1, 1, ' ')
+        elements.splice(i, 1, ' ')
+        elements.splice(i+1, 1, result)
+        console.log(elements)
+      }
+    }
+    return elements.filter(element => element != ' ' )
+  }
+
+  const operate = {
+    '+' : (ee, er) => (ee + er),
+    '-' : (ee, er) => (ee - er),
+    '×' : (ee, er) => (ee * er),
+    '÷' : (ee, er) => (ee / er)
+  }
